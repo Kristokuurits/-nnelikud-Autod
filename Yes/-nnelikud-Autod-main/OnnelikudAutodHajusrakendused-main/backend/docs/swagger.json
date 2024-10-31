@@ -33,9 +33,6 @@
                                 "examples": {
                                     "Cars": {
                                         "value": [
-                                            {"id": 1, "name": "Toyota Corolla"},
-                                            {"id": 2, "name": "Honda Civic"},
-                                            {"id": 3, "name": "Ford Focus"},
                                             {"id": 1, "name": "Õli vahetus"},
                                             {"id": 2, "name": "Autohooldus"},
                                             {"id": 3, "name": "Ülevaatus"},
@@ -55,13 +52,13 @@
                         "description": "Korras"
                     }
                 },
-                "summary": "Kõik autod"
+                "summary": "Kõik auto remondid"
             },
             "post": {
                 "tags": [
                     "OnnelikudAutod"
                 ],
-                "summary": "Lisa uus auto",
+                "summary": "Lisa uus auto remont",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -85,7 +82,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Auto lisatud edukalt",
+                        "description": "Auto remont lisatud edukalt",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -138,7 +135,7 @@
                 "tags": [
                     "OnnelikudAutod"
                 ],
-                "summary": "Leia auto ID järgi",
+                "summary": "Leia auto remont ID järgi",
                 "parameters": [
                     {
                         "name": "id",
@@ -151,7 +148,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Auto leitud",
+                        "description": "Auto remont leitud",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -188,7 +185,107 @@
                         }
                     },
                     "404": {
-                        "description": "Autot ei leitud",
+                        "description": "Autot remonti ei leitud",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Autot ei leitud"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "OnnelikudAutod"
+                ],
+                "summary": "Uuenda auto remont ID järgi",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Auto nimi"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "description": "Auto hind"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Auto remont edukalt uuendatud",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Auto with ID {id} has been updated."
+                                        },
+                                        "car": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ebakorralik ID või vale andmed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "ID peab olema ainult numbrid"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Autot remonti ei leitud",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -209,7 +306,7 @@
                 "tags": [
                     "OnnelikudAutod"
                 ],
-                "summary": "Kustuta auto ID järgi",
+                "summary": "Kustuta auto remont ID järgi",
                 "parameters": [
                     {
                         "name": "id",
@@ -222,7 +319,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Auto edukalt kustutatud",
+                        "description": "Auto remont edukalt kustutatud",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -254,7 +351,7 @@
                         }
                     },
                     "404": {
-                        "description": "Autot ei leitud",
+                        "description": "Autot remonti ei leitud",
                         "content": {
                             "application/json": {
                                 "schema": {
