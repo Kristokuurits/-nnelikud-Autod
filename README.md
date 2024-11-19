@@ -20,4 +20,5 @@ Järjekorda Paigutamine: Kui auto jõuab meie töökotta, registreeritakse see s
 
 Täiendavad Teenused: Kui kliendil on mitmeid teenuseid korraga vaja, saab süsteem pakkuda sobiva järjekorra, et kõik teenused saaksid efektiivselt sooritatud.
 
-![image](https://github.com/user-attachments/assets/84dae6de-9683-4c00-bf85-96eb9aa33b92)
+![image](https://github.com/user-attachments/assets/00e851e8-cbf9-4418-b201-e35fb6b9e21b)
+
