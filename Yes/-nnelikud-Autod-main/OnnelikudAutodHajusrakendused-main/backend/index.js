@@ -74,40 +74,70 @@ app.delete("/onnelikud-autod/:id", (req, res) => {
     if (index === -1) return res.status(404).send({ error: "Autot ei leitud" });
 
     onnellikudAutod.splice(index, 1);
-    res.send({ message: `Auto with ID ${id} has been deleted.` });
+    res.send({ message: "Auto kustutatud" });
+});
+
+app.get("/auto-jarjekord", (req, res) => {
+    res.send(autoJärjekord); 
+});
+
+app.get("/auto-jarjekord/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const auto = autoJärjekord.find(a => a.id === id);
+    if (!auto) return res.status(404).send({ error: "Auto ei ole järjekorras" });
+    res.send(auto);
 });
 
 app.post("/auto-jarjekord/:id", (req, res) => {
     const id = parseInt(req.params.id);
     const auto = onnellikudAutod.find(a => a.id === id);
-    if (!auto) return res.status(404).send({ error: "Autot ei leitud" });
+    if (!auto) return res.status(404).send({ error: "Auto ei leitud" });
 
-    if (autoJärjekord.some(j => j.id === id)) {
-        return res.status(400).send({ error: "See auto on juba järjekorras" });
+    const name = req.body.name || auto.name;  
+    const status = req.body.status || "Järjekorras"; 
+
+    if (autoJärjekord.some(a => a.id === id)) {
+        return res.status(400).send({ error: "Auto on juba järjekorras" });
     }
 
-    autoJärjekord.push({ id: auto.id, name: auto.name });
-    res.send({ message: `Auto '${auto.name}' lisati järjekorda.`, järjekord: autoJärjekord });
+    autoJärjekord.push({ id, name, status });
+    res.send({ message: `Auto ${name} on järjekorras`, auto: { id, name, status } });
 });
 
-app.get("/auto-jarjekord", (req, res) => {
-    res.send(autoJärjekord);
+app.put("/auto-jarjekord/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const autoInQueue = autoJärjekord.find(a => a.id === id);
+
+    if (!autoInQueue) {
+        return res.status(404).send({ error: "Auto ei ole järjekorras" });
+    }
+
+    const { name, status } = req.body;
+
+    // Muudame ainult neid andmeid, mis on saadetud.
+    if (name) {
+        autoInQueue.name = name;
+    }
+    if (status) {
+        autoInQueue.status = status;
+    }
+
+    res.send({ message: `Auto ${autoInQueue.name} järjekorras uuendatud`, auto: autoInQueue });
 });
 
 app.delete("/auto-jarjekord/:id", (req, res) => {
     const id = parseInt(req.params.id);
-    const index = autoJärjekord.findIndex(j => j.id === id);
-    if (index === -1) return res.status(404).send({ error: "Autot järjekorras ei leitud" });
+    const index = autoJärjekord.findIndex(a => a.id === id);
+    if (index === -1) return res.status(404).send({ error: "Auto ei ole järjekorras" });
 
-    const removed = autoJärjekord.splice(index, 1);
-    res.send({ message: `Auto '${removed[0].name}' eemaldati järjekorrast.`, järjekord: autoJärjekord });
+    autoJärjekord.splice(index, 1);
+    res.send({ message: "Auto eemaldatud järjekorrast" });
 });
 
 function createId() {
-    if (onnellikudAutod.length === 0) return 1;
-    return Math.max(...onnellikudAutod.map(auto => auto.id)) + 1;
+    return Math.max(...onnellikudAutod.map(a => a.id)) + 1;
 }
 
 app.listen(port, () => {
-    console.log(`API running at http://${host}:${port}`);
+    console.log(`Server running at http://${host}:${port}`);
 });
