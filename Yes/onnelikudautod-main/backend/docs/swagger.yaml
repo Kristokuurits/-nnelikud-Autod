@@ -1,0 +1,170 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Õnnelike Autode API"
+  description: "API autoteenuste ja järjekorra haldamiseks"
+host: "localhost:8080"
+basePath: "/"
+schemes:
+  - "http"
+paths:
+  /onnelikud-autod:
+    get:
+      tags:
+        - "Autoteenused"
+      summary: "Kõik õnnelikud autod"
+      description: "Pealkiri: Õnnelikud autod"
+      responses:
+        200:
+          description: "Tagastab kõik autod"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Auto"
+    post:
+      tags:
+        - "Autoteenused"
+      summary: "Lisa uus auto"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/UusAuto"
+      responses:
+        201:
+          description: "Uus auto lisatud"
+        400:
+          description: "Vigased andmed"
+  /onnelikud-autod/{id}:
+    get:
+      tags:
+        - "Autoteenused"
+      summary: "Leia auto ID järgi"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "Tagastab auto detailid"
+          schema:
+            $ref: "#/definitions/Auto"
+        404:
+          description: "Autot ei leitud"
+    put:
+      tags:
+        - "Autoteenused"
+      summary: "Uuenda auto andmeid"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/UusAuto"
+      responses:
+        200:
+          description: "Auto uuendatud"
+        404:
+          description: "Autot ei leitud"
+    delete:
+      tags:
+        - "Autoteenused"
+      summary: "Kustuta auto"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "Auto kustutatud"
+        404:
+          description: "Autot ei leitud"
+  /auto-jarjekord:
+    get:
+      tags:
+        - "Järjekord"
+      summary: "Vaata auto järjekorda"
+      description: "Pealkiri: Järjekord"
+      responses:
+        200:
+          description: "Tagastab kõik järjekorras olevad autod"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Auto"
+  /auto-jarjekord/{id}:
+    post:
+      tags:
+        - "Järjekord"
+      summary: "Lisa auto järjekorda"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "Auto lisatud järjekorda"
+        400:
+          description: "Vigane päring"
+    delete:
+      tags:
+        - "Järjekord"
+      summary: "Eemalda auto järjekorrast"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "Auto eemaldatud järjekorrast"
+        404:
+          description: "Autot järjekorras ei leitud"
+
+# Siin on definitions osa, kuhu tuleb lisada Auto ja UusAuto mudelid.
+definitions:
+  Auto:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Auto ID"
+      marka:
+        type: "string"
+        description: "Auto mark"
+      mudel:
+        type: "string"
+        description: "Auto mudel"
+      aasta:
+        type: "integer"
+        description: "Auto valmimisaasta"
+      värv:
+        type: "string"
+        description: "Auto värv"
+  UusAuto:
+    type: "object"
+    properties:
+      marka:
+        type: "string"
+        description: "Auto mark"
+        example: "Toyota"
+      mudel:
+        type: "string"
+        description: "Auto mudel"
+        example: "Corolla"
+      aasta:
+        type: "integer"
+        description: "Auto valmimisaasta"
+        example: 2023
+      värv:
+        type: "string"
+        description: "Auto värv"
+        example: "sinine"
