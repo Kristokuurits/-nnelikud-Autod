@@ -26,26 +26,23 @@ let clients = [
     { id: 2, name: "Jane Smith", email: "jane@example.com", phoneNumber: "0987654321", address: "456 Oak Avenue" }
 ];
 
-// Helper function to generate unique IDs
+
 function createId(arr) {
     return arr.length === 0 ? 1 : Math.max(...arr.map(a => a.id)) + 1;
 }
 
-// Home route
 app.get("/", (req, res) => {
     res.send(`Server running. Docs at <a href='http://${host}:${port}/docs'>/docs</a>`);
 });
 
-// Get all happy car repairs
 app.get("/services", (req, res) => {
     res.json(services);
 });
 
-// Add a new happy car repair
 app.post("/services", (req, res) => {
     const { name,price } = req.body;
 
-    // Validate required fields
+
     if (!name || !price) {
         return res.status(400).json({ error: "Missing required fields" });
     }
